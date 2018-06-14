@@ -1,0 +1,38 @@
+create_r_project:
+  work_dir:
+    required: False
+    default: ""
+    help: "Working directory for the project.  This can be changed later.  This is where any temporary or intermediate files will live."
+
+  input_dir:
+    required: False
+    default: ""
+    help: "This is the location of your data.  If on your computer, provide the path to the data. \
+            If it lives on a remote machine, use the format: <server_name>:<path_on_server>. \
+            The server must then be specifed in your config file under hosts."
+
+  output_dir:
+    default: ""
+    required: False
+    help: "This is where any final outputs from your code will go.  You can change this later."
+
+  use_gateway:
+    default: False
+    required: False
+    help: "If you are connecting to a remote machine via a gateway, you can set this to true. \
+            To Enable this feature, you must set `gateway:username & gateway:password` in your config file under `hosts`."
+
+  project_name:
+    required: True
+    help: "Project name, this will create a project directory in the current directory"
+
+  output_format:
+    default: "pdf_output"
+    choices: ["pdf_output", "word_output", "html_output"]
+    help: "R-MD file output type.  You can change this later."
+
+perform_sync:
+  config:
+    required: True
+    help: "Location of project-specific config file.  Created during `create-r-project`"
+
