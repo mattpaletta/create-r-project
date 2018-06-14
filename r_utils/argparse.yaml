@@ -32,7 +32,8 @@ create_r_project:
     help: "R-MD file output type.  You can change this later."
 
 perform_sync:
-  config:
-    required: True
+  config_file:
+    required: False
+    default: ""
     help: "Location of project-specific config file.  Created during `create-r-project`"
 

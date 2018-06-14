@@ -119,6 +119,8 @@ def perform_sync(config_file=None):
     if config_file is None:
         args = parse_args("perform_sync")
         config_file = args.config_file
+    if (config_file is None or config_file == "") and os.path.exists("config.yml"):
+        config_file = "config.yml"
 
     configs = _read_configs(config_file)
     assert "dir" in configs.keys(), "'dir' must be a key in config file."
