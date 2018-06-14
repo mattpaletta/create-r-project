@@ -14,7 +14,7 @@ setup(name='create-r-project',
       author_email='mattpaletta@gmail.com',
       url='https://www.python.org/sigs/distutils-sig/',
       packages=find_packages(),
-      requires=requirements,
+      install_requires=requirements,
       entry_points={
           'console_scripts': [
               'create-r-project = r_utils.main:create_r_project',
