@@ -35,5 +35,5 @@ perform_sync:
   config_file:
     required: False
     default: "config.yml"
-    help: "Location of project-specific config file.  Created during `create-r-project`"
+    help: "Location of project-specific config file2.  Created during `create-r-project`"
 

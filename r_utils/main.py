@@ -12,6 +12,16 @@ OUTPUT_DIR_KEY = "output_dir"
 WORK_DIR_KEY = "work_dir"
 
 
+def setup_logging():
+    root = logging.getLogger()
+    root.setLevel(logging.DEBUG)
+
+    ch = logging.StreamHandler(sys.stdout)
+    ch.setLevel(logging.DEBUG)
+    formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s - [%(filename)s:%(lineno)s]')
+    ch.setFormatter(formatter)
+    root.addHandler(ch)
+
 def _current_day_seconds():
     import time
     return int(time.time())
@@ -52,6 +62,7 @@ def _fetch_files(source, dest, remote_username, remote_password):
     ssh = paramiko.SSHClient()
     ssh.load_system_host_keys()
     ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+    logging.debug("Connecting using: " + remote_username + " " + remote_password)
     ssh.connect('0.0.0.0', port=10022, username=remote_username, password=remote_password)
 
     # Define progress callback that prints the current percentage completed for the file
@@ -87,7 +98,8 @@ def _fetch_files_gateway(source, dest,
         ssh = paramiko.SSHClient()
         ssh.load_system_host_keys()
         ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-        ssh.connect('0.0.0.0', port=22, username=remote_username, password=remote_password)
+        logging.debug("Connecting using: " + gateway_location + " " + remote_username + " " + remote_password + " -> " + remote_location)
+        ssh.connect('0.0.0.0', port=10022, username=remote_username, password=remote_password)
 
         # Define progress callback that prints the current percentage completed for the file
         logging.info("Fetching: " + source + " to " + dest)
@@ -115,6 +127,7 @@ def _is_local_file(source):
 
 
 def perform_sync(config_file=None):
+    setup_logging()
     if config_file is None:
         args = parse_args("perform_sync")
         config_file = args.config_file
@@ -260,6 +273,7 @@ def parse_args(root_key):
 
 
 def create_r_project(work_dir="", project_name=None, output_format=None, output_dir="", input_dir="", use_gateway=False):
+    setup_logging()
     output_format_choices = ["pdf_output", "word_output", "html_output"]
     if work_dir is None or project_name is None or output_format is None:
         args = parse_args("create_r_project")
@@ -282,7 +296,7 @@ def create_r_project(work_dir="", project_name=None, output_format=None, output_
 
     for dir_to_make in directories_to_make:
         if not os.path.exists(os.path.join(dir_to_create_project, dir_to_make)):
-            os.makedirs(os.path.join(dir_to_create_project, dir_to_make))
+            os.makedirs(os.path.join(dir_to_create_project, dir_to_make), exist_ok=True)
 
     default_yaml_schema = {
         "project_name": project_name,
@@ -325,14 +339,7 @@ def create_r_project(work_dir="", project_name=None, output_format=None, output_
 
 
 if __name__ == "__main__":
-    root = logging.getLogger()
-    root.setLevel(logging.DEBUG)
 
-    ch = logging.StreamHandler(sys.stdout)
-    ch.setLevel(logging.DEBUG)
-    formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s - [%(filename)s:%(lineno)s]')
-    ch.setFormatter(formatter)
-    root.addHandler(ch)
 
     create_r_project("/tmp", "test", output_format="pdf_output")
     perform_sync("/tmp/test/config.yml")
