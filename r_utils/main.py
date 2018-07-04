@@ -223,7 +223,7 @@ def perform_sync(config_file=None):
     if type(input_dir) is list:
         for input_d in input_dir:
             if _is_local_file(input_d) and not os.path.exists(input_d):
-                os.makedirs(input_d, exist_ok=True)
+                os.makedirs(os.path.join(input_d), exist_ok=True)
     elif _is_local_file(input_dir) and not os.path.exists(input_dir):
         os.makedirs(input_dir)
     os.makedirs(output_dir, exist_ok=True)
