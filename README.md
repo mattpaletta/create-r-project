@@ -18,15 +18,15 @@ This will sync the project with any remote files you may be trying to access loc
 
 # Parameters
 `project_name`: Specifies the project name.
-`dir`: Specifies the working directory (temporary & intermediate files), input directory (remote or local data source), and output directory (for final outputs)
+`dir`: Specifies the working directory (temporary & intermediate files), input directory (remote or local data source) [as a list or a string], and an output directory (for final outputs)
 `data_refresh_mode`: 
 * manual: the user will manually sync files
 * auto: files will be updated if the last update occured more than `data_refresh_days` ago, or if no local files exist (like the first time you run the project)
 * always: files will be updated every time this script is called.  The `last_update` date will be updated.
 `data_refresh_days`: If `data_refresh_mode` is set to `auto`, specifies how long to keep the current data before downloading new versions from the server.
 `local_data`: The local directory to store downloaded data.  Default `<work_dir>/local_data>`.
-`hosts`: Specifies information about any hosts you want to be able to connect to. If you specify `use_gateway=true`, you must specify a `gateway` under `hosts`.  You cannot currently push files to the server after the script completes, only pulling data locally.  If you want to see this added, make a feature request.
-* gateway: location (hostname/IP), username and password for the gateway machine.  Currently only supports 1 gateway.  If you want more, make a feature request.
+`hosts`: Specifies information about any hosts you want to be able to connect to. You must specify a location (hostname/IP) of the remote machine, and a username.  Password is optional.  If you do not specify a password, you will be prompted for one at runtime, once per host.  If you specify `use_gateway=<my_gateway>`, you must specify a `<my_gateway>` under `hosts`.  You cannot currently push files to the server after the script completes, only pulling data locally.  If you want to see this added, make a feature request.
+	* use_gateway: location (hostname/IP), username and password for the gateway machine.  Currently only supports 1 gateway.  If you want more, make a feature request.
 * other: location (hostname/IP), username and password for any remote machines.  The `key` must match the prefix of remote files/folders.  i.e. `baz:~/my_file.dat` where `baz` is the key under `hosts`.
 
 For more information, see `sync-project --help`
@@ -52,8 +52,6 @@ In our config file (config.yml), we would update it to the following:
 },
 "data_refresh_mode": "auto",
 "data_refresh_days": 30,
-"local_data": "~/Projects/proj/tmp/local_data",
-use_gateway": true,
 "hosts": {
 	"gateway": {
 		"location": "Foo.ca",
@@ -63,7 +61,8 @@ use_gateway": true,
 	"baz": {
 		"location" "baz.ca",
 		"username": "bar",
-		"password": "1234"
+		"password": "1234",
+		"use_gateway": "gateway"
 	}
 }
 ```
