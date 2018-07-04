@@ -60,7 +60,6 @@ def _fetch_files(source, dest, remote_username, remote_password):
         last_message = "Receiving: {0} progress: {1}".format(str(filename), round(float(sent) / float(size) * 100.0), 5)
         logging.debug(last_message)
 
-
     # SCPCLient takes a paramiko transport and progress callback as its arguments.
     scp = SCPClient(ssh.get_transport(), progress=progress)
 
