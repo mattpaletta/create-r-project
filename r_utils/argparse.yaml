@@ -16,12 +16,6 @@ create_r_project:
     required: False
     help: "This is where any final outputs from your code will go.  You can change this later."
 
-  use_gateway:
-    default: False
-    required: False
-    help: "If you are connecting to a remote machine via a gateway, you can set this to true. \
-            To Enable this feature, you must set `gateway:username & gateway:password` in your config file under `hosts`."
-
   project_name:
     required: True
     help: "Project name, this will create a project directory in the current directory"
