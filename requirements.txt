@@ -1,4 +1,4 @@
-PyYAML==3.12
+PyYAML==5.4
 paramiko
 scp
 sshtunnel
